@@ -1,95 +1,58 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { ChatContainer, Template } from "@/templates/ChatPageTemplate";
+import ChatScrollSection from "@/components/ChatScrollSection";
+import ChatBox from "@/components/ChatBox";
+import ChatInput from "@/components/ChatInput";
+import { useEffect, useRef, useState } from "react";
+import WebSocketSetting from "@/service/WebSocket";
 
-export default function Home() {
+const MainPage = () => {
+  const [message, setMessage] = useState([]);
+  const webSocket = useRef<WebSocket | null>(null);
+  const GetMessage = (event: MessageEvent) => {
+    setMessage([...message, event.data]);
+  };
+
+  useEffect(() => {
+    webSocket.current = new WebSocket(
+      "ws://e86d-106-101-2-188.ngrok-free.app/ws/chat"
+    );
+    webSocket.current.onopen = () => {
+      console.log("WebSocket 연결!");
+    };
+    webSocket.current.onclose = (error) => {
+      console.log(error);
+    };
+    webSocket.current.onerror = (error) => {
+      console.log(error);
+    };
+    webSocket.current.onmessage = (event: MessageEvent) => {
+      GetMessage(event);
+    };
+    // WebSocketSetting({ webSocket, GetMessage });
+  }, []);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <Template>
+      <ChatContainer>
+        <ChatScrollSection>
+          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
+          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
+          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
+          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
+          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
+          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
+          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
+          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
+          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
+          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
+          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
+          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
+        </ChatScrollSection>
+        <ChatInput />
+      </ChatContainer>
+    </Template>
   );
-}
+};
+
+export default MainPage;
