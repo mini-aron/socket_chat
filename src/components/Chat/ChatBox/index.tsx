@@ -3,7 +3,7 @@ import * as S from "./style";
 interface Props {
   message: string;
   title: string;
-  date: string;
+  date: Date;
   isMy: boolean;
 }
 export function ChatWrapper(value: string) {

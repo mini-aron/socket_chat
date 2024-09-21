@@ -1,21 +1,26 @@
 "use client";
 import { ChatContainer, Template } from "@/templates/ChatPageTemplate";
-import ChatScrollSection from "@/components/ChatScrollSection";
-import ChatBox from "@/components/ChatBox";
-import ChatInput from "@/components/ChatInput";
+import ChatScrollSection from "@/components/Chat/ChatScrollSection";
 import { useEffect, useRef, useState } from "react";
-import WebSocketSetting from "@/service/WebSocket";
+import MessageType from "@/types/MessageType";
+import Input from "@/components/Chat/Input";
 
 const MainPage = () => {
-  const [message, setMessage] = useState([]);
+  const [messages, setMessages] = useState<MessageType[]>([
+    {
+      name: "아론",
+      message: "머해",
+      createdAt: new Date(),
+    },
+  ]);
   const webSocket = useRef<WebSocket | null>(null);
   const GetMessage = (event: MessageEvent) => {
-    setMessage([...message, event.data]);
+    setMessages([...messages, event.data]);
   };
 
   useEffect(() => {
     webSocket.current = new WebSocket(
-      "ws://e86d-106-101-2-188.ngrok-free.app/ws/chat"
+      `ws://${process.env.NEXT_PUBLIC_BASE_SERVER_URL}/ws/chat`
     );
     webSocket.current.onopen = () => {
       console.log("WebSocket 연결!");
@@ -28,28 +33,19 @@ const MainPage = () => {
     };
     webSocket.current.onmessage = (event: MessageEvent) => {
       GetMessage(event);
+      console.log("event", event);
     };
-    // WebSocketSetting({ webSocket, GetMessage });
   }, []);
+
+  const sendMessage = (value: string) => {
+    webSocket.current?.send(value);
+  };
 
   return (
     <Template>
       <ChatContainer>
-        <ChatScrollSection>
-          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
-          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
-          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
-          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
-          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
-          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
-          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
-          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
-          <ChatBox message="집가고싶어" title="이아론" date="" isMy={false} />
-          <ChatBox message="집 가" title="노현주" date="" isMy={true} />
-          <ChatBox message="극T야 그냥;" title="이아론" date="" isMy={false} />
-          <ChatBox message="나는 F긴해" title="강민수" date="" isMy={false} />
-        </ChatScrollSection>
-        <ChatInput />
+        <ChatScrollSection messages={messages} userId={"aron"} />
+        <Input sendMessage={sendMessage} />
       </ChatContainer>
     </Template>
   );
