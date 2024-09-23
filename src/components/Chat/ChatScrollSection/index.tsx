@@ -1,5 +1,5 @@
 import ChatBox from "../ChatBox";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import MessageType from "@/types/MessageType";
 import * as S from "./style";
 
@@ -10,6 +10,23 @@ interface Props {
 }
 
 const ChatScrollSection = ({ messages, userId }: Props) => {
+  const scrollSectionRef = useRef(null);
+
+  const scrollToBottom = (element: HTMLDivElement | null) => {
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+      console.log("스클로");
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom(scrollSectionRef.current);
+  }, [messages]);
+
   return (
     <S.Wrapper>
       {messages.length > 0 &&
@@ -22,6 +39,7 @@ const ChatScrollSection = ({ messages, userId }: Props) => {
             date={message.createdAt}
           />
         ))}
+      <div ref={scrollSectionRef} />
     </S.Wrapper>
   );
 };
