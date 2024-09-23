@@ -12,6 +12,7 @@ export const Input = styled.input`
   border: 0;
   border-radius: 4px;
   background-color: #f7f7f8;
+  padding: 0 10px;
 `;
 
 export const SubmitButton = styled.button`
