@@ -33,7 +33,7 @@ const ChatPage = () => {
     });
 
     webSocket.current = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_BASE_SERVER_URL}/ws/chat`
+      `wss://${process.env.NEXT_PUBLIC_BASE_SERVER_URL}/ws/chat`
     );
     webSocket.current.onopen = () => {};
     webSocket.current.onclose = (error) => {

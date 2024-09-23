@@ -5,7 +5,7 @@ import * as S from "./style";
 
 interface Props {
   children?: ReactNode;
-  messages: MessageType[];
+  messages: MessageType[] | [];
   userId: string;
 }
 
