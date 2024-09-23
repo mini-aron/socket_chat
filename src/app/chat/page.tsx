@@ -4,8 +4,7 @@ import ChatScrollSection from "@/components/Chat/ChatScrollSection";
 import { useEffect, useRef, useState } from "react";
 import MessageType from "@/types/MessageType";
 import Input from "@/components/Chat/Input";
-import { useRecoilValue } from "recoil";
-import { userIdState } from "@/atoms";
+import { useRouter } from "next/navigation";
 
 async function fetchInitialMessages() {
   const response = await fetch(
@@ -16,8 +15,13 @@ async function fetchInitialMessages() {
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const userId = useRecoilValue(userIdState);
+  const userId = localStorage.getItem("userId") || "";
   const webSocket = useRef<WebSocket | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userId === "") router.push("/");
+  }, [userId]);
 
   useEffect(() => {
     fetchInitialMessages().then((initialMessages) => {

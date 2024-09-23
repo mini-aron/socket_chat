@@ -1,13 +1,15 @@
-import { userIdState } from "@/atoms";
-import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import * as S from "./style";
+import { useState } from "react";
 
 const SignupForm = () => {
-  const [userId, setUserId] = useRecoilState<string>(userIdState);
+  const [userId, setUserId] = useState<string>("");
   const router = useRouter();
   const submitHandle = () => {
-    if (userId) router.push("/chat");
+    if (userId) {
+      localStorage.setItem("userId", userId);
+      router.push("/chat");
+    }
   };
 
   return (
