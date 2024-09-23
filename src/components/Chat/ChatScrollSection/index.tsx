@@ -1,5 +1,5 @@
 import ChatBox from "../ChatBox";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import MessageType from "@/types/MessageType";
 import * as S from "./style";
 
@@ -10,11 +10,6 @@ interface Props {
 }
 
 const ChatScrollSection = ({ messages, userId }: Props) => {
-  useEffect(() => {
-    console.log(messages);
-    console.log(userId);
-  }, [messages]);
-
   return (
     <S.Wrapper>
       {messages.length > 0 &&
