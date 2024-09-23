@@ -15,14 +15,18 @@ async function fetchInitialMessages() {
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const userId = localStorage.getItem("userId") || "";
+  const [userId, setUserId] = useState<string>("");
   const webSocket = useRef<WebSocket | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (userId === "") router.push("/");
-  }, [userId]);
-
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      router.push("/");
+    }
+  }, [router]);
   useEffect(() => {
     fetchInitialMessages().then((initialMessages) => {
       setMessages(initialMessages);
