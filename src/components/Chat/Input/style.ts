@@ -7,6 +7,7 @@ export const Wrapper = styled.form`
 `;
 
 export const Input = styled.input`
+  box-sizing: border-box;
   height: 100%;
   width: 80%;
   border: 0;
