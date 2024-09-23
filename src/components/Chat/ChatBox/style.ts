@@ -33,6 +33,7 @@ export const ChatWrapper = styled.div`
 export const ChatInformationWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: ${({ isMy }: Props) => (isMy ? "end" : "start")};
   margin-left: 20px;
   margin-right: 20px;
 `;
@@ -40,4 +41,8 @@ export const Name = styled.div`
   font-family: 400;
   margin-bottom: 5px;
   font-size: 0.8rem;
+`;
+
+export const DateWrapper = styled.p`
+  font-size: 12px;
 `;

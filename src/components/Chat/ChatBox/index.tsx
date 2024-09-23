@@ -18,7 +18,7 @@ export function ChatWrapper(value: string) {
 const ChatBox = ({ message, title, isMy }: Props) => {
   return (
     <S.ChatBoxWrapper isMy={isMy}>
-      <S.ChatInformationWrapper>
+      <S.ChatInformationWrapper isMy={isMy}>
         <S.Name>{title}</S.Name>
         <S.ChatWrapper>{message}</S.ChatWrapper>
       </S.ChatInformationWrapper>
