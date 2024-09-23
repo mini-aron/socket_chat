@@ -12,19 +12,21 @@ interface Props {
 const ChatScrollSection = ({ messages, userId }: Props) => {
   useEffect(() => {
     console.log(messages);
+    console.log(userId);
   }, [messages]);
 
   return (
     <S.Wrapper>
-      {messages.map((message, idx) => (
-        <ChatBox
-          key={idx}
-          message={message.message}
-          title={message.name}
-          isMy={userId === message.name}
-          date={message.createdAt}
-        />
-      ))}
+      {messages.length > 0 &&
+        messages.map((message, idx) => (
+          <ChatBox
+            key={idx}
+            message={message.message}
+            title={message.name}
+            isMy={userId === message.name}
+            date={message.createdAt}
+          />
+        ))}
     </S.Wrapper>
   );
 };
