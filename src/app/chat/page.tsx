@@ -27,23 +27,40 @@ const ChatPage = () => {
       router.push("/");
     }
   }, [router]);
+
+  const connectWebSocket = () => {
+    webSocket.current = new WebSocket(
+      `wss://${process.env.NEXT_PUBLIC_BASE_SERVER_URL}/ws/chat`
+    );
+
+    webSocket.current.onopen = () => {
+      console.log("WebSocket 연결됨");
+    };
+
+    webSocket.current.onclose = (error) => {
+      console.log("WebSocket 연결 끊김:", error);
+      setTimeout(connectWebSocket, 3000);
+    };
+
+    webSocket.current.onerror = (error) => {
+      console.log("WebSocket 오류:", error);
+      webSocket.current?.close();
+    };
+
+    webSocket.current.onmessage = (event: MessageEvent) => {
+      setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+    };
+  };
+
   useEffect(() => {
     fetchInitialMessages().then((initialMessages) => {
       setMessages(initialMessages);
     });
 
-    webSocket.current = new WebSocket(
-      `wss://${process.env.NEXT_PUBLIC_BASE_SERVER_URL}/ws/chat`
-    );
-    webSocket.current.onopen = () => {};
-    webSocket.current.onclose = (error) => {
-      console.log(error);
-    };
-    webSocket.current.onerror = (error) => {
-      console.log(error);
-    };
-    webSocket.current.onmessage = (event: MessageEvent) => {
-      setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+    connectWebSocket();
+
+    return () => {
+      webSocket.current?.close();
     };
   }, []);
 
