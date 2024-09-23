@@ -19,7 +19,6 @@ const ChatScrollSection = ({ messages, userId }: Props) => {
         block: "center",
         inline: "nearest",
       });
-      console.log("스클로");
     }
   };
 
