@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
   background-color: #ffffff;
-  height: 92%;
+  height: 91%;
   width: 100%;
   display: flex;
   flex-direction: column;

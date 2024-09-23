@@ -17,4 +17,6 @@ export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  justify-content: space-between;
+  box-shadow: 0px 4px 24px 0px rgba(76, 75, 91, 0.12);
 `;
